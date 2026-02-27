@@ -719,4 +719,15 @@
         const nums = e.target.querySelectorAll('.stat-num');
         const targets = [10, 50, null];
         nums.forEach((el, i) => {
-          if (targets[i]) animateCounter(
+          if (targets[i]) animateCounter( el, targets[i] + '+');
+        });
+        statsObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: .5 });
+
+  const heroStats = document.querySelector('.hero-stats');
+  if (heroStats) statsObs.observe(heroStats);
+</script>
+</body>
+</html>
