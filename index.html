@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Propuesta Digital — dinkbit × MRO Baja California</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1E2761;
+    --navy-deep: #12194A;
+    --navy-light: #283590;
+    --teal: #028090;
+    --teal-light: #03A8C0;
+    --ice: #CADCFC;
+    --accent: #F4A261;
+    --accent2: #E76F51;
+    --white: #FFFFFF;
+    --off-white: #F0F4FA;
+    --mid: #3D5A80;
+    --muted: #8AABCC;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy-deep);
+    color: var(--white);
+    overflow-x: hidden;
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--navy-deep); }
+  ::-webkit-scrollbar-thumb { background: var(--teal); border-radius: 2px; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 2.5rem;
+    background: rgba(18, 25, 74, 0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(202, 220, 252, 0.08);
+    transition: all .3s;
+  }
+  .nav-brand { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1rem; letter-spacing: 2px; color: var(--teal-light); text-transform: uppercase; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: .85rem; font-weight: 500; letter-spacing: .5px; transition: color .2s; }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    position: relative; overflow: hidden;
+    padding: 7rem 2.5rem 4rem;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background: radial-gradient(ellipse 80% 60% at 70% 50%, rgba(2,128,144,.18) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 50% at 10% 80%, rgba(244,162,97,.10) 0%, transparent 50%);
+  }
+  .hero-grid {
+    position: absolute; inset: 0; z-index: 0; opacity: .04;
+    background-image: repeating-linear-gradient(0deg, var(--ice) 0, var(--ice) 1px, transparent 1px, transparent 80px),
+                      repeating-linear-gradient(90deg, var(--ice) 0, var(--ice) 1px, transparent 1px, transparent 80px);
+  }
+
+  .hero-content { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; width: 100%; }
+
+  .hero-label {
+    display: inline-flex; align-items: center; gap: .5rem;
+    background: rgba(2,128,144,.15); border: 1px solid rgba(2,128,144,.35);
+    color: var(--teal-light); padding: .4rem 1rem; border-radius: 100px;
+    font-size: .75rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+    margin-bottom: 2rem;
+    animation: fadeUp .8s ease both;
+  }
+  .hero-label span { width: 6px; height: 6px; background: var(--teal-light); border-radius: 50%; animation: pulse 2s infinite; }
+
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .3; } }
+
+  h1.hero-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(3rem, 7vw, 6rem);
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -2px;
+    color: var(--white);
+    animation: fadeUp .8s .1s ease both;
+  }
+  h1.hero-title em { font-style: normal; color: var(--accent); }
+
+  .hero-sub {
+    max-width: 560px;
+    margin-top: 1.5rem;
+    color: var(--muted);
+    font-size: 1.1rem;
+    line-height: 1.7;
+    font-weight: 300;
+    animation: fadeUp .8s .2s ease both;
+  }
+
+  .hero-cta {
+    display: flex; gap: 1rem; margin-top: 2.5rem; flex-wrap: wrap;
+    animation: fadeUp .8s .3s ease both;
+  }
+  .btn-primary {
+    background: var(--teal); color: var(--white);
+    padding: .85rem 2rem; border-radius: 6px;
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: .9rem; letter-spacing: 1px;
+    text-decoration: none; text-transform: uppercase;
+    transition: background .2s, transform .2s;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: var(--teal-light); transform: translateY(-2px); }
+  .btn-outline {
+    background: transparent; color: var(--ice);
+    padding: .85rem 2rem; border-radius: 6px; border: 1px solid rgba(202,220,252,.3);
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: .9rem; letter-spacing: 1px;
+    text-decoration: none; text-transform: uppercase;
+    transition: border-color .2s, color .2s, transform .2s;
+    display: inline-block;
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; margin-top: 5rem;
+    background: rgba(202,220,252,.08);
+    border-top: 1px solid rgba(202,220,252,.08);
+    animation: fadeUp .8s .4s ease both;
+  }
+  .stat-box { padding: 1.8rem 1.5rem; background: rgba(18,25,74,.6); }
+  .stat-num { font-family: 'Syne', sans-serif; font-size: 2.5rem; font-weight: 800; color: var(--accent); line-height: 1; }
+  .stat-label { color: var(--muted); font-size: .8rem; margin-top: .4rem; letter-spacing: .5px; }
+
+  /* ── SECTION BASE ── */
+  section { padding: 6rem 2.5rem; }
+  .section-inner { max-width: 1100px; margin: 0 auto; }
+  .section-tag {
+    font-family: 'Syne', sans-serif; font-size: .7rem; font-weight: 700;
+    letter-spacing: 3px; text-transform: uppercase; color: var(--teal-light);
+    margin-bottom: .75rem;
+  }
+  h2.section-title {
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: clamp(2rem, 4vw, 3rem); line-height: 1.1; letter-spacing: -1px;
+    margin-bottom: 1rem;
+  }
+  .section-lead { color: var(--muted); max-width: 600px; line-height: 1.7; font-size: 1rem; }
+
+  /* ── DIVIDER ── */
+  .divider { width: 100%; height: 1px; background: rgba(202,220,252,.08); }
+
+  /* ── RETO ── */
+  #reto { background: var(--off-white); color: var(--navy-deep); }
+  #reto .section-tag { color: var(--teal); }
+  #reto .section-lead { color: var(--mid); }
+  #reto h2.section-title { color: var(--navy); }
+
+  .reto-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3rem; }
+  .reto-card {
+    background: var(--white); border-radius: 8px;
+    padding: 2rem 1.75rem;
+    border-top: 4px solid var(--teal);
+    box-shadow: 0 4px 20px rgba(30,39,97,.08);
+    transition: transform .25s, box-shadow .25s;
+  }
+  .reto-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(30,39,97,.14); }
+  .reto-icon { font-size: 2rem; margin-bottom: 1rem; }
+  .reto-card h3 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.05rem; color: var(--navy); margin-bottom: .6rem; }
+  .reto-card p { color: var(--mid); font-size: .9rem; line-height: 1.6; }
+
+  /* ── DINKBIT ── */
+  #dinkbit { background: var(--navy); }
+
+  .dinkbit-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; margin-top: 3rem; }
+  .dinkbit-text p { color: var(--muted); line-height: 1.8; margin-top: 1rem; font-size: .95rem; }
+  .dinkbit-text p + p { margin-top: .75rem; }
+
+  .dinkbit-stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .dstat {
+    background: rgba(40,53,144,.5); border: 1px solid rgba(202,220,252,.12);
+    border-radius: 8px; padding: 1.5rem;
+    border-left: 3px solid var(--accent);
+    transition: background .2s;
+  }
+  .dstat:hover { background: rgba(40,53,144,.8); }
+  .dstat-num { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 2rem; color: var(--accent); }
+  .dstat-label { color: var(--muted); font-size: .8rem; margin-top: .3rem; }
+
+  /* ── PORTAFOLIO ── */
+  #portafolio { background: var(--navy-deep); }
+
+  .brands-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; margin-top: 3rem; background: rgba(202,220,252,.08); border: 1px solid rgba(202,220,252,.08); }
+  .brand-cell {
+    background: rgba(18,25,74,.9); padding: 1.5rem 1.25rem;
+    text-align: center; transition: background .2s;
+    cursor: default;
+  }
+  .brand-cell:hover { background: rgba(2,128,144,.15); }
+  .brand-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: .95rem; color: var(--ice); }
+  .brand-sector { color: var(--muted); font-size: .72rem; margin-top: .3rem; letter-spacing: .3px; }
+
+  /* ── POR QUÉ ── */
+  #porque { background: var(--off-white); color: var(--navy); }
+  #porque .section-tag { color: var(--teal); }
+  #porque .section-lead { color: var(--mid); }
+  #porque h2.section-title { color: var(--navy); }
+
+  .porque-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 3rem; }
+  .porque-card {
+    background: var(--white); border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 4px 16px rgba(30,39,97,.07);
+    display: flex; gap: 1.25rem;
+    transition: transform .25s, box-shadow .25s;
+  }
+  .porque-card:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(30,39,97,.13); }
+  .porque-icon-wrap {
+    flex-shrink: 0; width: 48px; height: 48px; border-radius: 10px;
+    background: rgba(2,128,144,.12); display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+  }
+  .porque-card h3 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; color: var(--navy); margin-bottom: .5rem; }
+  .porque-card p { color: var(--mid); font-size: .88rem; line-height: 1.6; }
+
+  /* ── BENEFICIOS ── */
+  #beneficios { background: var(--navy); }
+
+  .beneficios-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-top: 3rem; }
+  .beneficio-card {
+    background: rgba(40,53,144,.4); border: 1px solid rgba(202,220,252,.1);
+    border-radius: 8px; padding: 2rem 1.5rem; text-align: center;
+    border-top: 3px solid var(--accent);
+    transition: transform .25s, background .2s;
+  }
+  .beneficio-card:hover { transform: translateY(-4px); background: rgba(40,53,144,.7); }
+  .beneficio-num { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 3rem; color: var(--accent); line-height: 1; }
+  .beneficio-label { color: var(--ice); font-size: .85rem; margin-top: .8rem; line-height: 1.5; }
+
+  .beneficios-note { margin-top: 1.5rem; color: var(--muted); font-size: .78rem; font-style: italic; text-align: center; }
+
+  /* ── PASOS ── */
+  #pasos { background: var(--navy-deep); }
+
+  .pasos-list { margin-top: 3rem; display: flex; flex-direction: column; gap: 1rem; }
+  .paso {
+    display: grid; grid-template-columns: 56px 1fr;
+    gap: 1.25rem; align-items: center;
+    background: rgba(30,39,97,.5); border: 1px solid rgba(202,220,252,.08);
+    border-radius: 8px; padding: 1.5rem;
+    transition: background .2s, border-color .2s;
+  }
+  .paso:hover { background: rgba(30,39,97,.9); border-color: var(--teal); }
+  .paso-num {
+    width: 48px; height: 48px; border-radius: 8px;
+    background: var(--teal); display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem; color: var(--white);
+    flex-shrink: 0;
+  }
+  .paso h3 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; color: var(--ice); margin-bottom: .3rem; }
+  .paso p { color: var(--muted); font-size: .88rem; line-height: 1.5; }
+
+  /* ── CTA FINAL ── */
+  #contacto {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-deep) 100%);
+    position: relative; overflow: hidden; text-align: center; padding: 8rem 2.5rem;
+  }
+  #contacto::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(2,128,144,.2) 0%, transparent 70%);
+  }
+  .contacto-inner { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; }
+  #contacto h2 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(2rem, 5vw, 3.5rem); letter-spacing: -1px; line-height: 1.1; }
+  #contacto h2 em { font-style: normal; color: var(--accent); }
+  #contacto p { color: var(--muted); margin: 1.5rem 0 2.5rem; font-size: 1rem; line-height: 1.7; }
+  .contacto-url {
+    display: inline-flex; align-items: center; gap: .6rem;
+    color: var(--teal-light); font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: 1.1rem; text-decoration: none;
+    border-bottom: 1px solid rgba(3,168,192,.3); padding-bottom: 2px;
+    transition: color .2s, border-color .2s;
+  }
+  .contacto-url:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--navy-deep); padding: 1.5rem 2.5rem;
+    border-top: 1px solid rgba(202,220,252,.06);
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: .78rem; color: var(--muted);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity .65s ease, transform .65s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    section { padding: 4rem 1.5rem; }
+    #hero { padding: 6rem 1.5rem 3rem; }
+    .hero-stats { grid-template-columns: repeat(3, 1fr); }
+    .reto-grid { grid-template-columns: 1fr; }
+    .dinkbit-layout { grid-template-columns: 1fr; gap: 2.5rem; }
+    .brands-grid { grid-template-columns: repeat(2, 1fr); }
+    .porque-grid { grid-template-columns: 1fr; }
+    .beneficios-grid { grid-template-columns: 1fr 1fr; }
+    #info-contacto .section-inner > div { grid-template-columns: 1fr !important; gap: 2.5rem !important; }
+    footer { flex-direction: column; gap: .5rem; text-align: center; }
+  }
+  @media (max-width: 560px) {
+    .hero-stats { grid-template-columns: 1fr; }
+    .beneficios-grid { grid-template-columns: 1fr; }
+    .brands-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">XPRESS INDUSTRIAL × dinkbit</div>
+  <ul class="nav-links">
+    <li><a href="#reto">El Reto</a></li>
+    <li><a href="#dinkbit">dinkbit</a></li>
+    <li><a href="#portafolio">Portafolio</a></li>
+    <li><a href="#porque">¿Por qué?</a></li>
+    <li><a href="#pasos">Pasos</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-label"><span></span>Propuesta para Gerencia · 2025</div>
+    <h1 class="hero-title">
+      Modernización<br>Digital para<br><em style="color:var(--accent);font-size:0.85em;letter-spacing:-1px;">XPRESS INDUSTRIAL</em>
+    </h1>
+    <p class="hero-sub">
+      Una propuesta para digitalizar nuestra operación de Mantenimiento, Reparación y Operaciones
+      en Baja California con la agencia <strong style="color:var(--accent);font-size:1.15em;font-family:'Syne',sans-serif;letter-spacing:1px;">dinkbit</strong>
+      — la misma que construyó las plataformas de Steren, Starbucks, Red Bull y L'Oréal.
+    </p>
+    <div class="hero-cta">
+      <a href="#reto" class="btn-primary">Ver Propuesta</a>
+      <a href="https://dinkbit.com" target="_blank" class="btn-outline">Visitar dinkbit.com ↗</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-box">
+        <div class="stat-num">10+</div>
+        <div class="stat-label">Años en el mercado</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">50+</div>
+        <div class="stat-label">Proyectos corporativos</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">MX · ES</div>
+        <div class="stat-label">Presencia internacional</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EL RETO -->
+<section id="reto">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-tag">01 — El Reto</div>
+      <h2 class="section-title">¿Dónde estamos hoy?</h2>
+      <p class="section-lead">Tres brechas críticas limitan nuestra capacidad de crecer en el mercado de maquiladoras de BC.</p>
+    </div>
+    <div class="reto-grid">
+      <div class="reto-card reveal">
+        <div class="reto-icon">❌</div>
+        <h3>Presencia digital limitada</h3>
+        <p>Las maquiladoras de BC no encuentran nuestros productos fácilmente en línea. Perdemos ventas antes de que lleguen a nosotros.</p>
+      </div>
+      <div class="reto-card reveal">
+        <div class="reto-icon">📦</div>
+        <h3>Catálogo MRO sin digitalizar</h3>
+        <p>Miles de SKUs sin búsqueda técnica eficiente, sin cotización en línea, sin historial de órdenes. El cliente tiene que llamar para todo.</p>
+      </div>
+      <div class="reto-card reveal">
+        <div class="reto-icon">🤝</div>
+        <h3>Competencia se moderniza</h3>
+        <p>Competidores ya ofrecen portales B2B con órdenes de compra automatizadas. Cada día que esperamos, perdemos terreno.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- DINKBIT -->
+<section id="dinkbit">
+  <div class="section-inner">
+    <div class="dinkbit-layout">
+      <div class="dinkbit-text reveal">
+        <div class="section-tag">02 — La Solución</div>
+        <h2 class="section-title">¿Qué es<br><span style="color:var(--accent);font-size:1.15em;letter-spacing:1px;">dinkbit?</span></h2>
+        <p>Con sede en Ciudad de México y presencia en España, dinkbit se especializa en construir plataformas digitales robustas para empresas de primer nivel en México y Latinoamérica.</p>
+        <p>Su enfoque combina diseño UX/UI de clase mundial con tecnología de comercio electrónico como <strong style="color:var(--teal-light)">Adobe Commerce (Magento)</strong>, garantizando escalabilidad y resultados medibles.</p>
+        <p style="margin-top:1rem">No son una agencia de diseño genérica: son especialistas en construir plataformas que <em style="color:var(--accent)">generan negocios</em> reales.</p>
+      </div>
+      <div class="dinkbit-stats-grid reveal">
+        <div class="dstat">
+          <div class="dstat-num">10+</div>
+          <div class="dstat-label">Años de experiencia</div>
+        </div>
+        <div class="dstat">
+          <div class="dstat-num">50+</div>
+          <div class="dstat-label">Proyectos corporativos</div>
+        </div>
+        <div class="dstat">
+          <div class="dstat-num">2</div>
+          <div class="dstat-label">Oficinas: MX + España</div>
+        </div>
+        <div class="dstat">
+          <div class="dstat-num" style="font-size:1.2rem;padding-top:.4rem">Adobe<br>Commerce</div>
+          <div class="dstat-label">Tecnología principal</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PORTAFOLIO -->
+<section id="portafolio">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-tag">03 — Portafolio</div>
+      <h2 class="section-title">Marcas que confían<br>en dinkbit</h2>
+      <p class="section-lead">Empresas de primer nivel en México avalan su capacidad técnica y su enfoque B2B.</p>
+    </div>
+    <div class="brands-grid reveal">
+      <div class="brand-cell"><div class="brand-name">Steren</div><div class="brand-sector">Retail · Electrónica</div></div>
+      <div class="brand-cell"><div class="brand-name">Starbucks</div><div class="brand-sector">Retail · Café</div></div>
+      <div class="brand-cell"><div class="brand-name">Red Bull</div><div class="brand-sector">Bebidas · Activaciones</div></div>
+      <div class="brand-cell"><div class="brand-name">Grupo ACIR</div><div class="brand-sector">Medios · Radio</div></div>
+      <div class="brand-cell"><div class="brand-name">KLM</div><div class="brand-sector">Aerolíneas · Internacional</div></div>
+      <div class="brand-cell"><div class="brand-name">KIA México</div><div class="brand-sector">Automotriz</div></div>
+      <div class="brand-cell"><div class="brand-name">Cinemex</div><div class="brand-sector">Entretenimiento</div></div>
+      <div class="brand-cell"><div class="brand-name">AXA Seguros</div><div class="brand-sector">Finanzas</div></div>
+      <div class="brand-cell"><div class="brand-name">Grupo Bimbo</div><div class="brand-sector">Consumo masivo</div></div>
+      <div class="brand-cell"><div class="brand-name">PwC</div><div class="brand-sector">Consultoría</div></div>
+      <div class="brand-cell"><div class="brand-name">Iberdrola</div><div class="brand-sector">Energía</div></div>
+      <div class="brand-cell"><div class="brand-name">Checo Pérez</div><div class="brand-sector">Deportes · F1</div></div>
+      <div class="brand-cell"><div class="brand-name">L'Oréal</div><div class="brand-sector">Retail · Belleza</div></div>
+      <div class="brand-cell"><div class="brand-name">Forever 21</div><div class="brand-sector">Moda · Retail</div></div>
+      <div class="brand-cell"><div class="brand-name">Martha Debayle</div><div class="brand-sector">Media · eCommerce</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- POR QUÉ -->
+<section id="porque">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-tag">04 — Propuesta de Valor</div>
+      <h2 class="section-title">¿Por qué dinkbit<br>para nuestra empresa?</h2>
+      <p class="section-lead">Cuatro razones específicas que hacen de dinkbit el aliado ideal para el sector MRO en Baja California.</p>
+    </div>
+    <div class="porque-grid">
+      <div class="porque-card reveal">
+        <div class="porque-icon-wrap">🏭</div>
+        <div>
+          <h3>Experiencia en alto volumen</h3>
+          <p>Han gestionado catálogos masivos para Steren y Sodexo. Entender el volumen y la complejidad de MRO no es novedad para ellos.</p>
+        </div>
+      </div>
+      <div class="porque-card reveal">
+        <div class="porque-icon-wrap">🔧</div>
+        <div>
+          <h3>Enfoque B2B y compras corporativas</h3>
+          <p>Sus soluciones integran flujos para órdenes de compra por volumen, historial de pedidos, múltiples usuarios y facturación empresarial.</p>
+        </div>
+      </div>
+      <div class="porque-card reveal">
+        <div class="porque-icon-wrap">⚡</div>
+        <div>
+          <h3>Tecnología escalable: Adobe Commerce</h3>
+          <p>La misma plataforma usada en los e-commerce más robustos de México. Catálogos de miles de SKUs, búsqueda técnica e inventario en tiempo real.</p>
+        </div>
+      </div>
+      <div class="porque-card reveal">
+        <div class="porque-icon-wrap">📱</div>
+        <div>
+          <h3>Apps para piso de producción</h3>
+          <p>Desarrollaron la app Steren Card. Una solución similar permitiría a técnicos hacer cotizaciones y órdenes directo desde la línea.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- BENEFICIOS -->
+<section id="beneficios">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-tag">05 — Impacto Esperado</div>
+      <h2 class="section-title">Lo que una plataforma<br>dinkbit nos generaría</h2>
+    </div>
+    <div class="beneficios-grid">
+      <div class="beneficio-card reveal">
+        <div class="beneficio-num">+40%</div>
+        <div class="beneficio-label">Reducción en tiempos de cotización</div>
+      </div>
+      <div class="beneficio-card reveal">
+        <div class="beneficio-num">24/7</div>
+        <div class="beneficio-label">Disponibilidad de catálogo en línea</div>
+      </div>
+      <div class="beneficio-card reveal">
+        <div class="beneficio-num">+60%</div>
+        <div class="beneficio-label">Alcance a nuevas cuentas maquiladoras</div>
+      </div>
+      <div class="beneficio-card reveal">
+        <div class="beneficio-num">100%</div>
+        <div class="beneficio-label">Imagen profesional ante clientes internacionales</div>
+      </div>
+    </div>
+    <p class="beneficios-note reveal">* Proyecciones basadas en benchmarks del sector e-commerce B2B</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PASOS -->
+<section id="pasos">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-tag">06 — Plan de Acción</div>
+      <h2 class="section-title">Próximos pasos</h2>
+      <p class="section-lead">Cuatro acciones concretas para llevar esta propuesta de gerencia a proyecto activo.</p>
+    </div>
+    <div class="pasos-list">
+      <div class="paso reveal">
+        <div class="paso-num">01</div>
+        <div>
+          <h3>Revisión de portafolio</h3>
+          <p>Explorar dinkbit.com y revisar casos similares al sector MRO e industrial para validar capacidades técnicas.</p>
+        </div>
+      </div>
+      <div class="paso reveal">
+        <div class="paso-num">02</div>
+        <div>
+          <h3>Primera reunión con dinkbit</h3>
+          <p>Agendar una call de descubrimiento para presentar nuestras necesidades específicas y conocer su metodología.</p>
+        </div>
+      </div>
+      <div class="paso reveal">
+        <div class="paso-num">03</div>
+        <div>
+          <h3>Solicitud de propuesta formal</h3>
+          <p>Pedir cotización detallada con alcance, tiempos y tecnología propuesta para presentar a dirección.</p>
+        </div>
+      </div>
+      <div class="paso reveal">
+        <div class="paso-num">04</div>
+        <div>
+          <h3>Evaluación y aprobación</h3>
+          <p>Presentar propuesta final a dirección con análisis costo-beneficio y tomar decisión informada.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO DINKBIT -->
+<section id="info-contacto" style="background:var(--navy);padding:5rem 2.5rem;">
+  <div class="section-inner">
+    <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;">
+
+      <!-- Reseña -->
+      <div>
+        <div class="section-tag">Sobre dinkbit</div>
+        <h2 class="section-title" style="font-size:clamp(1.6rem,3vw,2.2rem);margin-bottom:1.2rem;">Hacemos cosas <span style="color:var(--accent)">increíbles</span></h2>
+        <p style="color:var(--muted);line-height:1.8;font-size:.95rem;">
+          dinkbit es una agencia digital mexicana con más de 15 años en el mercado, especializada en <strong style="color:var(--ice)">desarrollo web, apps, eCommerce, marketing digital y diseño</strong>. Han colaborado con marcas líderes de México y el mundo en proyectos de alto impacto.
+        </p>
+        <p style="color:var(--muted);line-height:1.8;font-size:.95rem;margin-top:.85rem;">
+          Son <strong style="color:var(--teal-light)">Google Premier Partner</strong> certificados desde hace más de 10 años, <strong style="color:var(--teal-light)">Shopify Plus Partner</strong>, <strong style="color:var(--teal-light)">Meta Business Partner</strong>, <strong style="color:var(--teal-light)">Spotify Certified Partner</strong> y empresa <strong style="color:var(--teal-light)">Laravel Certified</strong>. No solo diseñan — construyen plataformas que generan negocios reales.
+        </p>
+        <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1.5rem;">
+          <span style="background:rgba(2,128,144,.15);border:1px solid rgba(2,168,192,.25);color:var(--teal-light);padding:.3rem .75rem;border-radius:100px;font-size:.72rem;letter-spacing:1px;font-weight:600;">Google Premier Partner</span>
+          <span style="background:rgba(2,128,144,.15);border:1px solid rgba(2,168,192,.25);color:var(--teal-light);padding:.3rem .75rem;border-radius:100px;font-size:.72rem;letter-spacing:1px;font-weight:600;">Shopify Plus Partner</span>
+          <span style="background:rgba(2,128,144,.15);border:1px solid rgba(2,168,192,.25);color:var(--teal-light);padding:.3rem .75rem;border-radius:100px;font-size:.72rem;letter-spacing:1px;font-weight:600;">Meta Business Partner</span>
+          <span style="background:rgba(2,128,144,.15);border:1px solid rgba(2,168,192,.25);color:var(--teal-light);padding:.3rem .75rem;border-radius:100px;font-size:.72rem;letter-spacing:1px;font-weight:600;">Spotify Certified</span>
+          <span style="background:rgba(2,128,144,.15);border:1px solid rgba(2,168,192,.25);color:var(--teal-light);padding:.3rem .75rem;border-radius:100px;font-size:.72rem;letter-spacing:1px;font-weight:600;">Laravel Certified</span>
+        </div>
+      </div>
+
+      <!-- Contacto -->
+      <div>
+        <div class="section-tag">Datos de Contacto</div>
+        <h2 class="section-title" style="font-size:clamp(1.6rem,3vw,2.2rem);margin-bottom:1.5rem;">¿Cómo <span style="color:var(--accent)">contactarlos?</span></h2>
+
+        <div style="display:flex;flex-direction:column;gap:.9rem;">
+
+          <div style="background:rgba(30,39,97,.5);border:1px solid rgba(202,220,252,.1);border-radius:8px;padding:1.1rem 1.3rem;display:flex;gap:1rem;align-items:flex-start;transition:background .2s;" onmouseover="this.style.background='rgba(30,39,97,.85)'" onmouseout="this.style.background='rgba(30,39,97,.5)'">
+            <span style="font-size:1.3rem;margin-top:.1rem;">📧</span>
+            <div>
+              <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:.8rem;color:var(--muted);letter-spacing:1px;margin-bottom:.2rem;">EMAIL</div>
+              <a href="mailto:contacto@dinkbit.com" style="color:var(--accent);text-decoration:none;font-size:.95rem;font-weight:500;">contacto@dinkbit.com</a>
+            </div>
+          </div>
+
+          <div style="background:rgba(30,39,97,.5);border:1px solid rgba(202,220,252,.1);border-radius:8px;padding:1.1rem 1.3rem;transition:background .2s;" onmouseover="this.style.background='rgba(30,39,97,.85)'" onmouseout="this.style.background='rgba(30,39,97,.5)'">
+            <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:.8rem;color:var(--muted);letter-spacing:1px;margin-bottom:.5rem;">🇲🇽 &nbsp;MÉXICO — Ciudad de México</div>
+            <div style="display:flex;flex-direction:column;gap:.3rem;">
+              <a href="tel:+525522241607" style="color:var(--ice);text-decoration:none;font-size:.92rem;">📞 (+52) 55 2224 1607</a>
+              <a href="https://wa.me/5215551077749" target="_blank" style="color:var(--ice);text-decoration:none;font-size:.92rem;">💬 WhatsApp (+52) 55 5107 7749</a>
+              <p style="color:var(--muted);font-size:.82rem;margin-top:.3rem;line-height:1.5;">Bosque de Ciruelos 130 PH 1201, Miguel Hidalgo, CDMX CP 11700</p>
+            </div>
+          </div>
+
+          <div style="background:rgba(30,39,97,.5);border:1px solid rgba(202,220,252,.1);border-radius:8px;padding:1.1rem 1.3rem;transition:background .2s;" onmouseover="this.style.background='rgba(30,39,97,.85)'" onmouseout="this.style.background='rgba(30,39,97,.5)'">
+            <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:.8rem;color:var(--muted);letter-spacing:1px;margin-bottom:.5rem;">🇪🇸 &nbsp;ESPAÑA — Madrid</div>
+            <div style="display:flex;flex-direction:column;gap:.3rem;">
+              <a href="tel:+34657559397" style="color:var(--ice);text-decoration:none;font-size:.92rem;">📞 (+34) 657 55 9397</a>
+              <a href="https://wa.me/34657559397" target="_blank" style="color:var(--ice);text-decoration:none;font-size:.92rem;">💬 WhatsApp (+34) 657 55 9397</a>
+              <p style="color:var(--muted);font-size:.82rem;margin-top:.3rem;line-height:1.5;">Calle de Hermosilla, 48, 1Dch, Madrid CP 28001</p>
+            </div>
+          </div>
+
+          <a href="https://dinkbit.com/contacto" target="_blank" class="btn-primary" style="text-align:center;margin-top:.3rem;">
+            Contactar a dinkbit ↗
+          </a>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section id="contacto">
+  <div class="contacto-inner reveal">
+    <div class="section-tag" style="color:var(--teal-light)">Conclusión</div>
+    <h2>Invertir en nuestra<br>presencia digital es<br>invertir en nuestro <em>futuro</em>.</h2>
+    <p>Posicionemos nuestra empresa como el proveedor MRO más innovador de Baja California. La tecnología ya existe — solo necesitamos dar el primer paso.</p>
+    <a href="https://dinkbit.com" target="_blank" class="contacto-url">
+      🌐 dinkbit.com ↗
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>XPRESS INDUSTRIAL · Baja California · 2025</span>
+  <span>Propuesta preparada para Gerencia</span>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  reveals.forEach(el => observer.observe(el));
+
+  // Nav scroll effect
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    nav.style.padding = window.scrollY > 60 ? '.7rem 2.5rem' : '1rem 2.5rem';
+  });
+
+  // Animated counter for hero stats
+  function animateCounter(el, target, suffix = '') {
+    let start = 0;
+    const duration = 1800;
+    const step = timestamp => {
+      if (!start) start = timestamp;
+      const progress = Math.min((timestamp - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const val = typeof target === 'number' ? Math.floor(eased * target) + suffix : target;
+      el.textContent = val;
+      if (progress < 1 && typeof target === 'number') requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+
+  const statsObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const nums = e.target.querySelectorAll('.stat-num');
+        const targets = [10, 50, null];
+        nums.forEach((el, i) => {
+          if (targets[i]) animateCounter(el, targets[i], '+');
+        });
+        statsObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: .5 });
+
+  const heroStats = document.querySelector('.hero-stats');
+  if (heroStats) statsObs.observe(heroStats);
+</script>
+</body>
+</html>
